@@ -28,6 +28,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "f2e9ee3b-c847-4c2d-9992-bdb1ce25f88b"
+      }
+    },
+    "owner": "junmengxu"
   }
 }

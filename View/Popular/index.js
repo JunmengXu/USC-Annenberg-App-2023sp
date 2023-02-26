@@ -26,7 +26,6 @@ return (
         </Card>
       </View>
 
-      <Crawler />
     </ScrollView>
   </>
 );

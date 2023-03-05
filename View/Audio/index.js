@@ -1,12 +1,14 @@
 import React from 'react';
 import { View, ScrollView, StyleSheet, Image } from 'react-native';
 import { Text, Card, Button, Icon } from '@rneui/themed';
+import SpotifyRadio from './spotifyRadios';
 
 const Audio = () => {
 return (
   <>
     <ScrollView>
       <View style={styles.container}>
+        <SpotifyRadio style={{ height: 300 }}/>
         <Card>
           <Card.Title>Audio</Card.Title>
           <Card.Divider />
@@ -22,28 +24,7 @@ return (
             structure than actual design.
           </Text>
         </Card>
-
-        <Button
-          title="Play audio"
-          loading={false}
-          loadingProps={{ size: 'small', color: 'white' }}
-          buttonStyle={{
-            backgroundColor: 'rgba(111, 202, 186, 1)',
-            borderRadius: 5,
-          }}
-          titleStyle={{ fontWeight: 'bold', fontSize: 23 }}
-          containerStyle={{
-            marginHorizontal: 50,
-            height: 50,
-            width: 200,
-            marginVertical: 10,
-          }}
-          onPress={() => console.log('aye')}
-        />
       </View>
-
-      
-
     </ScrollView>
   </>
 );

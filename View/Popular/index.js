@@ -2,6 +2,7 @@ import React from 'react';
 import { View, ScrollView, StyleSheet, Image } from 'react-native';
 import { Text, Card, Button, Icon } from '@rneui/themed';
 import Crawler from '../../APIs';
+import Videos from './videos'
 
 
 const Popular = () => {
@@ -9,23 +10,8 @@ return (
   <>
     <ScrollView>
       <View style={styles.container}>
-        <Card>
-          <Card.Title>Popular</Card.Title>
-          <Card.Divider />
-          <Card.Image
-            style={{ padding: 0 }}
-            source={{
-              uri:
-                'https://awildgeographer.files.wordpress.com/2015/02/john_muir_glacier.jpg',
-            }}
-          />
-          <Text style={{ marginBottom: 10 }}>
-            The idea with React Native Elements is more about component
-            structure than actual design.
-          </Text>
-        </Card>
+        <Videos />
       </View>
-
     </ScrollView>
   </>
 );

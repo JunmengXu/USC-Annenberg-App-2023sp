@@ -40,7 +40,7 @@ const News = () => {
       const newData = [];
 
       for(let i=0; i<data.length; i++) {
-        console.log(i, data[i].link)
+        // console.log(i, data[i].link)
         const curresponse = await axios.get(data[i].link);
         const curhtml = curresponse.data;
         const $ = cheerio.load(curhtml);
@@ -72,7 +72,7 @@ const News = () => {
                   <Card>
                   <Card.Title>{n.title}</Card.Title>
                   <Card.Divider />
-                    <View key={n.title} style={styles.user}>
+                    <View key={n.link} style={styles.user}>
                       <Image
                         source={{ uri: n.img }}
                         containerStyle={styles.item}

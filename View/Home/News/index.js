@@ -69,10 +69,10 @@ const News = () => {
         <View>
               {news.map((n, i) => {
                 return (
-                  <Card>
+                  <Card key={n.link}>
                   <Card.Title>{n.title}</Card.Title>
                   <Card.Divider />
-                    <View key={n.link} style={styles.user}>
+                    <View style={styles.user}>
                       <Image
                         source={{ uri: n.img }}
                         containerStyle={styles.item}

@@ -48,10 +48,10 @@ const Videos = () => {
             <View>
                 {videos.map((v, i) => {
                     return (
-                        <Card>
+                        <Card key={v.videoId}>
                             <Card.Title style={styles.title}>{v.title}</Card.Title>
                             <Card.Divider />
-                                <View key={v.videoId} style={styles.title}>
+                                <View style={styles.title}>
                                     <WebView
                                         source={{ uri: v.videoId }}
                                         allowsInlineMediaPlayback={true}

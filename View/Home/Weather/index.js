@@ -58,9 +58,11 @@ const Weather = () => {
       {currentWeatherDetails && (
         <View style={styles.container}>
         <View style={styles.card}>
-          <Image style={styles.icon} source={{uri: iconUrl}} />
+          <View>
+            <Image style={styles.icon} source={{uri: iconUrl}} />
+            <Text style={styles.description}>{currentWeatherDetails.weather[0].description}</Text>
+          </View>
           <Text style={styles.temperature}>{currentWeatherDetails.main.temp}°F</Text>
-          <Text style={styles.description}>{currentWeatherDetails.weather[0].description}</Text>
           <Text style={styles.location}>{currentWeatherDetails.name}</Text>
         </View>
         </View>
@@ -77,28 +79,32 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: '#FFFFFF',
-    borderRadius: 10,
-    padding: 16,
+    borderRadius: 20,
+    padding: 12,
     flexDirection: 'row',
     alignItems: 'center',
   },
   icon: {
     width: 50,
     height: 50,
-    marginRight: 16,
+    marginRight: 10,
+    marginLeft: 10,
   },
   temperature: {
     fontSize: 24,
     fontWeight: 'bold',
+    marginLeft: 10,
     marginRight: 8,
     color: '#9a0000',
   },
   description: {
     fontSize: 16,
-    marginRight: 8,
+    marginLeft: 15,
+    color: 'grey',
   },
   location: {
     fontSize: 16,
+    marginLeft: 10,
   },
 });
 

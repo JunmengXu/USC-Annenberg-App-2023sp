@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, ScrollView, StyleSheet, Image } from 'react-native';
+import { View, ScrollView, StyleSheet, Image, ActivityIndicator } from 'react-native';
 import { Text, Card, Button, Icon } from '@rneui/themed';
 import News from './News'
 
-const Home = () => {
+const Home = ({ navigation }) => {
 return (
   <>
     <ScrollView>
@@ -18,6 +18,7 @@ return (
 const styles = StyleSheet.create({
 container: {
   flex: 1,
+  justifyContent: 'center',
 },
 fonts: {
   marginBottom: 8,
@@ -27,9 +28,9 @@ user: {
   marginBottom: 6,
 },
 image: {
-  width: 30,
-  height: 30,
-  marginRight: 10,
+  height: 50,
+  marginLeft: 5,
+  marginRight: 5,
 },
 name: {
   fontSize: 16,

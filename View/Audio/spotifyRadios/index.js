@@ -6,7 +6,7 @@ import { Text, Card } from '@rneui/themed';
 import WebView from 'react-native-webview';
 
 const SpotifyRadio = () => {
-  const embedUrl = "https://open.spotify.com/embed/episode/0JhiPH8neYIscxS8bV9FSc?utm_source=generator";
+  // const embedUrl = "https://open.spotify.com/embed/episode/0JhiPH8neYIscxS8bV9FSc?utm_source=generator";
   const [radios, setRadios] = useState([]);
 
   useEffect(() => {
@@ -22,7 +22,18 @@ const SpotifyRadio = () => {
         const description = $(elem).find('.results-list--description-author-container > a > p').text();
         const author = $(elem).find('.results-list--description-author-container > div > section > span.ts-byline__names').text();
         const date = $(elem).find('.results-list--description-author-container > div > time').text();
+        const datetimeString = $(elem).find('.results-list--description-author-container > div > time').attr('datetime');
         const link = 'https://www.uscannenbergmedia.com' + halflink;
+
+        // convert date and time into local date and time
+        // const datetime = new Date(datetimeString);
+        // const year = datetime.getFullYear();
+        // const month = ('0' + (datetime.getMonth() + 1)).slice(-2); // add leading zero and ensure 2 digits
+        // const day = ('0' + datetime.getDate()).slice(-2); // add leading zero and ensure 2 digits
+        // const hours = ('0' + datetime.getHours()).slice(-2); // add leading zero and ensure 2 digits
+        // const minutes = ('0' + datetime.getMinutes()).slice(-2); // add leading zero and ensure 2 digits
+
+        // const formattedDatetimeString = `${year}-${month}-${day} ${hours}:${minutes}`;
         
         curRadios.push({
           title: title,
@@ -94,10 +105,6 @@ const SpotifyRadio = () => {
                 </Card>
               );
             })}
-
-
-
-          
         </View>
       </ScrollView>
     </>

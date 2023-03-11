@@ -1,18 +1,105 @@
-import React from 'react';
-import { View, ScrollView, StyleSheet, Image, ActivityIndicator } from 'react-native';
+import React, { useEffect, useState, useCallback } from 'react';
+import axios from 'axios';
+import cheerio from 'cheerio';
+import { View, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { Text, Card, Button, Icon } from '@rneui/themed';
 import News from './News'
+import Weather from './Weather';
 
 const Home = ({ navigation }) => {
-return (
-  <>
-    <ScrollView>
-      <View style={styles.container}>
-        <News />
-      </View>
-    </ScrollView>
-  </>
-);
+
+  const [refresh, setRefresh] = useState(false);
+  const [news, setNews] = useState([]);
+
+  const fetchData = async () => {
+    const response = await axios.get('https://www.uscannenbergmedia.com/arcio/rss/');
+    const html = response.data;
+    const $ = cheerio.load(html);
+    const curNews = [];
+
+    $('item').each(function(i, elem) {
+      const title = $(elem).find('title').text();
+      const link = $(elem).find('guid').text();
+      const date = $(elem).find('pubDate').text();
+      const description = $(elem).find('description').text();
+
+      // const datetime = new Date(Date.parse(date));
+      
+      // const year = datetime.getFullYear();
+      // const month = ('0' + (datetime.getMonth() + 1)).slice(-2); // add leading zero and ensure 2 digits
+      // const day = ('0' + datetime.getDate()).slice(-2); // add leading zero and ensure 2 digits
+      // const hours = ('0' + datetime.getHours()).slice(-2); // add leading zero and ensure 2 digits
+      // const minutes = ('0' + datetime.getMinutes()).slice(-2); // add leading zero and ensure 2 digits
+
+      // const formattedDatetimeString = `${year}-${month}-${day} ${hours}:${minutes}`;
+      // console.log(formattedDatetimeString);
+      
+      curNews.push({
+        title: title,
+        link: link,
+        date: date,
+        description: description,
+        img: null,
+      });
+    });
+    
+
+    setNews(curNews);
+    return curNews;
+  };
+  
+  const fetchImg = async () => {
+    const data = await fetchData();
+    const newData = [];
+
+    for(let i=0; i<data.length; i++) {
+      // console.log(i, data[i].link)
+      const curresponse = await axios.get(data[i].link);
+      const curhtml = curresponse.data;
+      const $ = cheerio.load(curhtml);
+      let imgdom = $('#main > div > div:nth-child(2) > div > figure > div > picture > img').attr('src');
+      const datetime = $('#main > div > div:nth-child(2) > div > time').text();
+
+      newData.push({
+        title: data[i].title,
+        link: data[i].link,
+        date: datetime,
+        description: data[i].description,
+        img: imgdom,
+      });
+    }
+
+    setNews(newData);
+
+  };
+
+  useEffect(() => {
+    // This function will only be executed once when the component mounts
+    fetchImg();
+  }, []);
+
+  const onRefresh = useCallback(async () => {
+    setRefresh(true);
+    try {
+      fetchImg();
+    } catch (error) {
+      console.error(error);
+    }
+    setRefresh(false);
+  }, []);
+
+  return (
+    <>
+      <ScrollView refreshControl={
+          <RefreshControl refresh={refresh} onRefresh={onRefresh} />
+        }>
+        <Weather />
+        <View style={styles.container}>
+          {news && <News news={news}/>}
+        </View>
+      </ScrollView>
+    </>
+  );
 };
 
 const styles = StyleSheet.create({

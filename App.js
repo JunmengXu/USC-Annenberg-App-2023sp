@@ -1,16 +1,27 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { Button, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import HomeScreen from './View/Home';
 import AudioScreen from './View/Audio';
 import MeScreen from './View/Me';
 import PopularScreen from './View/Popular';
 import SearchScreen from './View/Search';
+import DetailedNews from './View/Home/DetailedNews';
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
+
+function HomeStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="HomeNews" component={HomeScreen} options={{ headerShown: false }}/>
+      <Stack.Screen name="NewsDetail" component={DetailedNews} options={{ headerShown: false }}/>
+    </Stack.Navigator>
+  );
+}
 
 export default function App() {
   return (
@@ -45,16 +56,18 @@ export default function App() {
             // You can return any component that you like here!
             return <Ionicons name={iconName} size={size} color={color} />;
           },
-          tabBarActiveTintColor: 'red',
+          tabBarActiveTintColor: '#9a0000',
           tabBarInactiveTintColor: 'gray',
         })}
       >
-        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Home" component={HomeStack} />
         <Tab.Screen name="Radio" component={AudioScreen} />
         <Tab.Screen name="Popular" component={PopularScreen} />
         <Tab.Screen name="Search" component={SearchScreen} />
         <Tab.Screen name="Me" component={MeScreen} />
       </Tab.Navigator>
+
+      
     </NavigationContainer>
   );
 }

@@ -98,8 +98,8 @@ const styles = StyleSheet.create({
     color: '#9a0000',
   },
   description: {
-    fontSize: 16,
-    marginLeft: 15,
+    fontSize: 12,
+    marginLeft: 5,
     color: 'grey',
   },
   location: {

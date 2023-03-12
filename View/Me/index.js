@@ -2,6 +2,7 @@ import React from 'react';
 import { View, ScrollView, StyleSheet, Image } from 'react-native';
 import { Text, Card, Button, Icon } from '@rneui/themed';
 import Medias from './Medias';
+import Favorites from './Favorites';
 
 
 const Me = () => {
@@ -9,6 +10,7 @@ return (
   <>
     <ScrollView>
       <View style={styles.container}>
+        <Favorites/>
         <Medias/>
       </View>
     </ScrollView>

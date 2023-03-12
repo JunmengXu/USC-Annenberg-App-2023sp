@@ -10,6 +10,7 @@ const Home = ({ navigation }) => {
 
   const [refresh, setRefresh] = useState(false);
   const [news, setNews] = useState([]);
+  const initialNum = 5;
 
   const fetchData = async () => {
     const response = await axios.get('https://www.uscannenbergmedia.com/arcio/rss/');
@@ -42,17 +43,14 @@ const Home = ({ navigation }) => {
         img: null,
       });
     });
-    
-
-    setNews(curNews);
     return curNews;
   };
   
-  const fetchImg = async () => {
+  const fetchImgIni = async () => {
     const data = await fetchData();
     const newData = [];
-
-    for(let i=0; i<data.length; i++) {
+    const length = initialNum > data.length ? data.length : initialNum;
+    for(let i=0; i<length; i++) {
       // console.log(i, data[i].link)
       const curresponse = await axios.get(data[i].link);
       const curhtml = curresponse.data;
@@ -70,18 +68,52 @@ const Home = ({ navigation }) => {
     }
 
     setNews(newData);
-
+    return newData;
   };
+
+  const fetchImg = async () => {
+    const data = await fetchData();
+    const newData = [];
+    if(initialNum > data.length){
+      return;
+    }
+    for(let i=initialNum; i<data.length; i++) {
+      // console.log(i, data[i].link)
+      const curresponse = await axios.get(data[i].link);
+      const curhtml = curresponse.data;
+      const $ = cheerio.load(curhtml);
+      let imgdom = $('#main > div > div:nth-child(2) > div > figure > div > picture > img').attr('src');
+      const datetime = $('#main > div > div:nth-child(2) > div > time').text();
+
+      newData.push({
+        title: data[i].title,
+        link: data[i].link,
+        date: datetime,
+        description: data[i].description,
+        img: imgdom,
+      });
+    }
+
+    // setNews(newData);
+    return newData;
+  };
+
+  const fetchImgInfo = async () => {
+    const data1 = await fetchImgIni();
+    const data2 = await fetchImg();
+    const data3 = data1.concat(data2);
+    setNews(data3);
+  }
 
   useEffect(() => {
     // This function will only be executed once when the component mounts
-    fetchImg();
+    fetchImgInfo();
   }, []);
 
   const onRefresh = useCallback(async () => {
     setRefresh(true);
     try {
-      fetchImg();
+      fetchImgInfo();
     } catch (error) {
       console.error(error);
     }

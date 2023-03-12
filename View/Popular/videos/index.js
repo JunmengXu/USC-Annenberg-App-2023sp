@@ -6,41 +6,7 @@ import axios from 'axios';
 import cheerio from 'cheerio';
 
 
-const Videos = () => {
-
-  const [videos, setVideos] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await axios.get('https://www.youtube.com/feeds/videos.xml?channel_id=UCRhQCjsEqWvA6Iq_WKD1CoA');
-      const html = response.data;
-      const $ = cheerio.load(html);
-      const curVideos = [];
-      
-      $('entry').each(function(i, elem) {
-        const videoId = $(elem).find('yt\\:videoId').text();
-        const title = $(elem).find('title').text();
-        const date = $(elem).find('published').text();
-        const description = $(elem).find('media\\:description').text();
-        const fullVideoId = 'https://www.youtube.com/embed/'+videoId;
-
-        curVideos.push({
-          videoId: fullVideoId,
-          title: title,
-          date: date,
-          description: description,
-        });
-      });
-      
-
-      setVideos(curVideos);
-    };
-
-    fetchData();
-
-  }, []);
-
-
+const Videos = ({videos}) => {
 
   return (
     <>

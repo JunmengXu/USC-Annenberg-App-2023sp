@@ -5,80 +5,8 @@ import { View, StyleSheet, ScrollView } from 'react-native';
 import { Text, Card } from '@rneui/themed';
 import WebView from 'react-native-webview';
 
-const SpotifyRadio = () => {
-  // const embedUrl = "https://open.spotify.com/embed/episode/0JhiPH8neYIscxS8bV9FSc?utm_source=generator";
-  const [radios, setRadios] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await axios.get('https://www.uscannenbergmedia.com/arn/');
-      const html = response.data;
-      const $ = cheerio.load(html);
-      const curRadios = [];
-
-      $('.list-item').each(function(i, elem) {
-        const title = $(elem).find('.results-list--headline-container a').text();
-        const halflink = $(elem).find('.results-list--headline-container > a').attr('href');
-        const description = $(elem).find('.results-list--description-author-container > a > p').text();
-        const author = $(elem).find('.results-list--description-author-container > div > section > span.ts-byline__names').text();
-        const date = $(elem).find('.results-list--description-author-container > div > time').text();
-        const datetimeString = $(elem).find('.results-list--description-author-container > div > time').attr('datetime');
-        const link = 'https://www.uscannenbergmedia.com' + halflink;
-
-        // convert date and time into local date and time
-        // const datetime = new Date(datetimeString);
-        // const year = datetime.getFullYear();
-        // const month = ('0' + (datetime.getMonth() + 1)).slice(-2); // add leading zero and ensure 2 digits
-        // const day = ('0' + datetime.getDate()).slice(-2); // add leading zero and ensure 2 digits
-        // const hours = ('0' + datetime.getHours()).slice(-2); // add leading zero and ensure 2 digits
-        // const minutes = ('0' + datetime.getMinutes()).slice(-2); // add leading zero and ensure 2 digits
-
-        // const formattedDatetimeString = `${year}-${month}-${day} ${hours}:${minutes}`;
-        
-        curRadios.push({
-          title: title,
-          link: link,
-          description: description,
-          author: author,
-          date: date,
-          radio: null,
-        });
-        
-      });
-
-      setRadios(curRadios);
-      return curRadios;
-    };
-    
-    const fetchRadios = async () => {
-      const data = await fetchData();
-      const newData = [];
-
-      for(let i=0; i<data.length; i++) {
-        // console.log(i, data[i].link)
-        const curresponse = await axios.get(data[i].link);
-        const curhtml = curresponse.data;
-        const $ = cheerio.load(curhtml);
-        const target = $('iframe').attr('src');
-        
-        
-        newData.push({
-          title: data[i].title,
-          link: data[i].link,
-          description: data[i].description,
-          author: data[i].author,
-          date: data[i].date,
-          radio: target,
-        });
-      }
-
-      setRadios(newData);
-
-    };
-    fetchRadios();
-
-  }, []);
-
+const SpotifyRadio = ({radios}) => {
+  
   return (
     <>
       <ScrollView>

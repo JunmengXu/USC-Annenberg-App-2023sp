@@ -4,14 +4,14 @@ import { Text, Card, Button, Icon } from '@rneui/themed';
 import Medias from './Medias';
 import Favorites from './Favorites';
 
-
 const Me = () => {
 return (
   <>
     <ScrollView>
       <View style={styles.container}>
-        <Favorites/>
+        <Text style={styles.text}>Find Us Here:</Text>
         <Medias/>
+        <Favorites/>
       </View>
     </ScrollView>
   </>
@@ -22,8 +22,22 @@ const styles = StyleSheet.create({
 container: {
   flex: 1,
 },
-fonts: {
-  marginBottom: 8,
+text: {
+  // fontFamily: 'Arial',
+  // fontSize: 16,
+  // fontWeight: '400',
+  // color: '#333',
+  // lineHeight: 24,
+  // letterSpacing: 0.5,
+  // marginLeft: 10,
+  fontFamily: 'GreatVibes-Regular',
+  color: 'grey',
+  fontSize: 18,
+  fontWeight: 'bold',
+  fontStyle: 'italic',
+  textAlign: 'center',
+  textTransform: 'uppercase',
+  padding: 8,
 },
 user: {
   flexDirection: 'row',
@@ -33,10 +47,6 @@ image: {
   width: 30,
   height: 30,
   marginRight: 10,
-},
-name: {
-  fontSize: 16,
-  marginTop: 5,
 },
 });
 

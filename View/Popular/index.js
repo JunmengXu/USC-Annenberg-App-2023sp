@@ -83,6 +83,7 @@ image: {
   height: 50,
   marginLeft: 5,
   marginRight: 5,
+  marginTop: 5,
 },
 name: {
   fontSize: 16,

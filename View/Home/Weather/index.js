@@ -105,6 +105,8 @@ const styles = StyleSheet.create({
   location: {
     fontSize: 16,
     marginLeft: 10,
+    width: 160, // set the width of the block
+    flexWrap: 'wrap' // allow the text to wrap to the next line
   },
 });
 

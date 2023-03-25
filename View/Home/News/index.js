@@ -1,12 +1,35 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import cheerio from 'cheerio';
+import React, { useEffect, useState, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { Button, View, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity, RefreshControl } from 'react-native';
+import { View, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity, RefreshControl } from 'react-native';
 import { Text, Card, Image } from '@rneui/themed';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { NewsContext } from '../../Context/newsContext';
 
 const News = ({ news }) => {
 
+  const { myData, updateMyData } = useContext(NewsContext);
+
+  const handleLike = (item) => {
+    let updatedLikedNews;
+    const index = myData.findIndex(news => news.link === item.link);
+
+    if (index === -1) {
+      // If news is not in likedNews, add it
+      updatedLikedNews = [...myData, item];
+    } else {
+      // If news is already in likedNews, remove it
+      updatedLikedNews = [...myData];
+      updatedLikedNews.splice(index, 1);
+    }
+
+    // Save updated likedNews to AsyncStorage
+    AsyncStorage.setItem('likedNews', JSON.stringify(updatedLikedNews)).then(() => {
+      updateMyData(updatedLikedNews);
+    });
+  };
+
+  // used for redirecting detail news
   const navigation = useNavigation();
   
   return (
@@ -14,6 +37,8 @@ const News = ({ news }) => {
     <ScrollView>
         <View>
           {news.map((n, i) => {
+            const isLiked = myData.findIndex(news => news.link === n.link) !== -1;
+
             return (
               <TouchableOpacity
                 key={n.link}
@@ -34,9 +59,14 @@ const News = ({ news }) => {
                       PlaceholderContent={<ActivityIndicator />}
                     />}
                     <Text style={styles.description}>{n.description}</Text>
-                    {n.date !== undefined &&
-                      <Text style={styles.date}>{n.date}</Text>
-                    }
+                    <View style={{ flexDirection: 'row' }}>
+                      {n.date !== undefined &&
+                        <Text style={styles.date}>{n.date}</Text>
+                      }
+                      <TouchableOpacity onPress={() => handleLike(n)} style={styles.marker}>
+                        <Ionicons name={isLiked ? 'star' : 'star-outline'} size={30} color={isLiked ? '#9a0000' : '#9a0000'} />
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 </Card>
               </TouchableOpacity>
@@ -93,6 +123,13 @@ const styles = StyleSheet.create({
     undefinedItem: {
       height: 40,
       resizeMode: 'contain',
+    },
+    marker: {
+      position: 'absolute',
+      bottom: -8, // adjust the value to change the distance from the bottom
+      right: 5, // adjust the value to change the distance from the right
+      padding: 3, // adjust the padding as needed
+      borderRadius: 5, // adjust the border radius as needed
     },
 });
 

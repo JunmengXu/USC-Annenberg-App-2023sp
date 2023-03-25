@@ -10,6 +10,7 @@ import MeScreen from './View/Me';
 import PopularScreen from './View/Popular';
 import SearchScreen from './View/Search';
 import DetailedNews from './View/Home/DetailedNews';
+import { NewsContextProvider } from './View/Context/newsContext';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -25,49 +26,52 @@ function HomeStack() {
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
+    // Redux context share
+    <NewsContextProvider>
 
-            if (route.name === 'Home') {
-              iconName = focused
-                ? 'ios-home'
-                : 'ios-home-outline';
-            } else if (route.name === 'Radio') {
-              iconName = focused 
-                ? 'ios-headset' 
-                : 'ios-headset-outline';
-            } else if (route.name === 'Popular') {
-              iconName = focused 
-                ? 'ios-aperture' 
-                : 'ios-aperture-outline';
-            } else if (route.name === 'Search') {
-              iconName = focused 
-                ? 'ios-search-circle' 
-                : 'ios-search-circle-outline';
-            } else if (route.name === 'Me') {
-              iconName = focused
-                ? 'ios-person-circle' 
-                : 'ios-person-circle-outline';
-            }
+      <NavigationContainer>
+        <Tab.Navigator
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
+              let iconName;
 
-            // You can return any component that you like here!
-            return <Ionicons name={iconName} size={size} color={color} />;
-          },
-          tabBarActiveTintColor: '#9a0000',
-          tabBarInactiveTintColor: 'gray',
-        })}
-      >
-        <Tab.Screen name="Home" component={HomeStack} />
-        <Tab.Screen name="Radio" component={AudioScreen} />
-        <Tab.Screen name="Popular" component={PopularScreen} />
-        <Tab.Screen name="Search" component={SearchScreen} />
-        <Tab.Screen name="Me" component={MeScreen} />
-      </Tab.Navigator>
+              if (route.name === 'Home') {
+                iconName = focused
+                  ? 'ios-home'
+                  : 'ios-home-outline';
+              } else if (route.name === 'Radio') {
+                iconName = focused 
+                  ? 'ios-headset' 
+                  : 'ios-headset-outline';
+              } else if (route.name === 'Video') {
+                iconName = focused 
+                  ? 'ios-aperture' 
+                  : 'ios-aperture-outline';
+              } else if (route.name === 'Search') {
+                iconName = focused 
+                  ? 'ios-search-circle' 
+                  : 'ios-search-circle-outline';
+              } else if (route.name === 'Me') {
+                iconName = focused
+                  ? 'ios-person-circle' 
+                  : 'ios-person-circle-outline';
+              }
 
-      
-    </NavigationContainer>
+              // You can return any component that you like here!
+              return <Ionicons name={iconName} size={size} color={color} />;
+            },
+            tabBarActiveTintColor: '#9a0000',
+            tabBarInactiveTintColor: 'gray',
+          })}
+        >
+          <Tab.Screen name="Home" component={HomeStack} />
+          <Tab.Screen name="Radio" component={AudioScreen} />
+          <Tab.Screen name="Video" component={PopularScreen} />
+          <Tab.Screen name="Search" component={SearchScreen} />
+          <Tab.Screen name="Me" component={MeScreen} />
+        </Tab.Navigator>
+      </NavigationContainer>
+
+    </NewsContextProvider>
   );
 }

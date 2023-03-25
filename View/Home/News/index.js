@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { View, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity, RefreshControl } from 'react-native';
+import { View, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity, } from 'react-native';
 import { Text, Card, Image } from '@rneui/themed';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -8,24 +8,24 @@ import { NewsContext } from '../../Context/newsContext';
 
 const News = ({ news }) => {
 
-  const { myData, updateMyData } = useContext(NewsContext);
+  const { newsData, updateNewsData } = useContext(NewsContext);
 
   const handleLike = (item) => {
     let updatedLikedNews;
-    const index = myData.findIndex(news => news.link === item.link);
+    const index = newsData.findIndex(news => news.link === item.link);
 
     if (index === -1) {
       // If news is not in likedNews, add it
-      updatedLikedNews = [...myData, item];
+      updatedLikedNews = [...newsData, item];
     } else {
       // If news is already in likedNews, remove it
-      updatedLikedNews = [...myData];
+      updatedLikedNews = [...newsData];
       updatedLikedNews.splice(index, 1);
     }
 
     // Save updated likedNews to AsyncStorage
     AsyncStorage.setItem('likedNews', JSON.stringify(updatedLikedNews)).then(() => {
-      updateMyData(updatedLikedNews);
+      updateNewsData(updatedLikedNews);
     });
   };
 
@@ -37,7 +37,7 @@ const News = ({ news }) => {
     <ScrollView>
         <View>
           {news.map((n, i) => {
-            const isLiked = myData.findIndex(news => news.link === n.link) !== -1;
+            const isLiked = newsData.findIndex(news => news.link === n.link) !== -1;
 
             return (
               <TouchableOpacity

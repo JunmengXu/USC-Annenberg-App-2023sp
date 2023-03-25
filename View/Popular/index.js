@@ -22,10 +22,29 @@ const Popular = () => {
       const description = $(elem).find('media\\:description').text();
       const fullVideoId = 'https://www.youtube.com/embed/'+videoId;
 
+
+      const datePT = new Date(date);
+      // Format the date string in the desired format
+      const formattedDateString = datePT.toLocaleDateString('en-US', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+      }) + ' at ' + datePT.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true,
+        timeZoneName: 'short',
+        timeZone: 'America/Los_Angeles',
+      });
+
+      // Output the formatted date string
+      // console.log(formattedDateString); // March 23, 2023 at 11:14 am PST
+
+
       curVideos.push({
         videoId: fullVideoId,
         title: title,
-        date: date,
+        date: formattedDateString,
         description: description,
       });
     });

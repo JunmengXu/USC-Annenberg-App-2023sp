@@ -4,14 +4,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const NewsContext = createContext();
 
 const NewsContextProvider = ({ children }) => {
-  const [myData, setMyData] = useState([]);
+  const [newsData, setNewsData] = useState([]);
 
   useEffect(() => {
     // Load data from AsyncStorage on mount
     const loadData = async () => {
       try {
         const data = await AsyncStorage.getItem('likedNews');
-        setMyData(data ? JSON.parse(data) : []);
+        setNewsData(data ? JSON.parse(data) : []);
       } catch (error) {
         console.log(error);
       }
@@ -19,17 +19,17 @@ const NewsContextProvider = ({ children }) => {
     loadData();
   }, []);
 
-  const updateMyData = async (newData) => {
+  const updateNewsData = async (newData) => {
     try {
       await AsyncStorage.setItem('likedNews', JSON.stringify(newData));
-      setMyData(newData);
+      setNewsData(newData);
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <NewsContext.Provider value={{ myData, updateMyData }}>
+    <NewsContext.Provider value={{ newsData, updateNewsData }}>
       {children}
     </NewsContext.Provider>
   );

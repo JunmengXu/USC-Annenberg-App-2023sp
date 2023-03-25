@@ -1,17 +1,41 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import cheerio from 'cheerio';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import React, { useContext } from 'react';
+import { View, StyleSheet, ScrollView, TouchableOpacity, } from 'react-native';
 import { Text, Card } from '@rneui/themed';
 import WebView from 'react-native-webview';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { AudioContext } from '../../Context/audioContext';
 
 const SpotifyRadio = ({radios}) => {
   
+  const {audioData, updateAudioData } = useContext(AudioContext);
+
+  const handleLike = (item) => {
+    let updatedLikedAudio;
+    const index = audioData.findIndex(radios => radios.link === item.link);
+
+    if (index === -1) {
+      // If audio is not in likedAudio, add it
+      updatedLikedAudio = [...audioData, item];
+    } else {
+      // If audio is already in likedAudio, remove it
+      updatedLikedAudio = [...audioData];
+      updatedLikedAudio.splice(index, 1);
+    }
+
+    // Save updated likedAudio to AsyncStorage
+    AsyncStorage.setItem('likedAudio', JSON.stringify(updatedLikedAudio)).then(() => {
+      updateAudioData(updatedLikedAudio);
+    });
+  };
+
   return (
     <>
       <ScrollView>
         <View style={styles.container}>
             {radios.map((r, i) => {
+              const isLiked = audioData.findIndex(audios => audios.link === r.link) !== -1;
+
               return (
                 <Card key={r.link}>
                 <Card.Title>{r.title}</Card.Title>
@@ -27,8 +51,15 @@ const SpotifyRadio = ({radios}) => {
                       domStorageEnabled={true}
                       />
                     <Text style={styles.description}>{r.description}</Text>
-                    <Text style={styles.date}>By{r.author}</Text>
-                    <Text style={styles.date}>- {r.date}</Text>
+                    <View style={{ flexDirection: 'row' }}>
+                      <View style={{ flexDirection: 'column' }}>
+                        <Text style={styles.date}>By{r.author}</Text>
+                        <Text style={styles.date}>- {r.date}</Text>
+                      </View>
+                      <TouchableOpacity onPress={() => handleLike(r)} style={styles.marker}>
+                          <Ionicons name={isLiked ? 'star' : 'star-outline'} size={30} color={isLiked ? '#9a0000' : '#9a0000'} />
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 </Card>
               );
@@ -85,6 +116,13 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     zIndex: 1,
+  },
+  marker: {
+    position: 'absolute',
+    bottom: -8, // adjust the value to change the distance from the bottom
+    right: 5, // adjust the value to change the distance from the right
+    padding: 3, // adjust the padding as needed
+    borderRadius: 5, // adjust the border radius as needed
   },
 });
 

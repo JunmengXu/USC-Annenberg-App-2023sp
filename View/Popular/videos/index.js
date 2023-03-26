@@ -12,7 +12,7 @@ const Videos = ({videos}) => {
 
   const handleLike = (item) => {
     let updatedLikedVideo;
-    const index = videoData.findIndex(videos => videos.link === item.link);
+    const index = videoData.findIndex(videos => videos.videoId === item.videoId);
 
     if (index === -1) {
       // If video is not in likedVideo, add it

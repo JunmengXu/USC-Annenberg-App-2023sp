@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
-import { View, StyleSheet, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native';
-import { Text, Card, Image } from '@rneui/themed';
+import React, { useContext, useState } from 'react';
+import { Alert, View, StyleSheet, TouchableOpacity, ActivityIndicator, ScrollView, } from 'react-native';
+import { Text, Card, Image, } from '@rneui/themed';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { NewsContext } from '../../../Context/newsContext';
@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const LikedNews = () => {
     const { newsData, updateNewsData } = useContext(NewsContext);
-  
+    
     // used for redirecting detail news
     const navigation = useNavigation();
   
@@ -32,6 +32,22 @@ const LikedNews = () => {
         updateNewsData(updatedLikedNews);
       });
     };
+
+    const handlePress = (item) => {
+      Alert.alert(
+        "Confirm",
+        "Are you sure you want to unlike this news?",
+        [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel"
+          },
+          { text: "OK", onPress: () => handleNewsLike(item) }
+        ]
+     );
+    };
+  
   
     return (
         <ScrollView>
@@ -64,12 +80,13 @@ const LikedNews = () => {
                                 {n.date !== undefined &&
                                 <Text style={styles.date}>{n.date}</Text>
                                 }
-                                <TouchableOpacity onPress={() => handleNewsLike(n)} style={styles.marker}>
+                                <TouchableOpacity onPress={() => handlePress(n)} style={styles.marker}>
                                 <Ionicons name={'star'} size={30} color={'#9a0000'} />
                                 </TouchableOpacity>
                             </View>
                             </View>
                         </Card>
+
                         </TouchableOpacity>
                     );
                     })}

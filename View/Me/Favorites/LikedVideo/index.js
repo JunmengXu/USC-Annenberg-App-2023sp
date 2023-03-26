@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { Alert, View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Text, Card, } from '@rneui/themed';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -11,7 +11,7 @@ const LikedVideo = () => {
 
   const handleVideoLike = (item) => {
     let updatedLikedVideo;
-    const index = videoData.findIndex(videos => videos.link === item.link);
+    const index = videoData.findIndex(videos => videos.videoId === item.videoId);
 
     if (index === -1) {
       // If video is not in likedVideo, add it
@@ -26,6 +26,21 @@ const LikedVideo = () => {
     AsyncStorage.setItem('likedVideo', JSON.stringify(updatedLikedVideo)).then(() => {
       updateVideoData(updatedLikedVideo);
     });
+  };
+
+  const handlePress = (item) => {
+    Alert.alert(
+      "Confirm",
+      "Are you sure you want to unlike this vedio?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "OK", onPress: () => handleVideoLike(item) }
+      ]
+   );
   };
   
   return (
@@ -55,7 +70,7 @@ const LikedVideo = () => {
                                     <Text style={styles.date}>{v.date}</Text>
                                 </View>
                             </ScrollView>
-                            <TouchableOpacity onPress={() => handleVideoLike(v)} style={styles.marker}>
+                            <TouchableOpacity onPress={() => handlePress(v)} style={styles.marker}>
                                 <Ionicons name={'star'} size={30} color={'#9a0000'} />
                             </TouchableOpacity>
                         </View>

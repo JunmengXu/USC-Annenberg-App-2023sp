@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { Alert, View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Text, Card, } from '@rneui/themed';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -26,6 +26,21 @@ const LikedAudio = () => {
     AsyncStorage.setItem('likedAudio', JSON.stringify(updatedLikedAudio)).then(() => {
       updateAudioData(updatedLikedAudio);
     });
+  };
+
+  const handlePress = (item) => {
+    Alert.alert(
+      "Confirm",
+      "Are you sure you want to unlike this audio?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "OK", onPress: () => handleAudioLike(item) }
+      ]
+   );
   };
 
   return (
@@ -55,7 +70,7 @@ const LikedAudio = () => {
                             <Text style={styles.date}>By{r.author}</Text>
                             <Text style={styles.date}>- {r.date}</Text>
                         </View>
-                        <TouchableOpacity onPress={() => handleAudioLike(r)} style={styles.marker}>
+                        <TouchableOpacity onPress={() => handlePress(r)} style={styles.marker}>
                             <Ionicons name={'star'} size={30} color={'#9a0000'} />
                         </TouchableOpacity>
                         </View>

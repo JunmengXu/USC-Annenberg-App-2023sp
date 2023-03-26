@@ -79,7 +79,7 @@ const fetchRadios = async () => {
   const data = await fetchData();
   const newData = [];
   if(initialNum > data.length){
-    return;
+    return newData;
   }
   for(let i=initialNum; i<data.length; i++) {
     const curresponse = await axios.get(data[i].link);

@@ -34,7 +34,7 @@ const Home = ({ navigation }) => {
 
       // const formattedDatetimeString = `${year}-${month}-${day} ${hours}:${minutes}`;
       // console.log(formattedDatetimeString);
-      console.log(link);
+      
       curNews.push({
         title: title,
         link: link,

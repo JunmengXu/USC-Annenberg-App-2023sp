@@ -1,12 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Animated, View, TextInput, Text, StyleSheet, TouchableOpacity, Dimensions, } from 'react-native';
 import { WebView } from 'react-native-webview';
-import axios from 'axios';
-import cheerio from 'cheerio';
+import { useNavigation } from '@react-navigation/native';
+import he from "he";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const Search = () => {
+  const navigation = useNavigation();
 
   /**
    * Search Bar
@@ -17,13 +18,10 @@ const Search = () => {
   const handleSearch = () => {
     // combine user input with search URL
     const searchUrl = `https://www.uscannenbergmedia.com/search/?query=${searchText}`;
-
+    navigation.navigate('Result', { link: searchUrl })
     // navigate to search URL in WebView
-    setWebViewUrl(searchUrl);
+    // setWebViewUrl(searchUrl);
   };
-
-  // state to hold WebView URL
-  const [webViewUrl, setWebViewUrl] = useState(null);
 
 
   /**
@@ -68,57 +66,57 @@ const Search = () => {
   /**
   * Barrage animation
   */
-const [trendings, setTrendings] = useState([]);
+  const onWebViewMessage = (event) => {
+    const { data } = event.nativeEvent;
 
-const fetchTrendings = async () => {
-  // const response = await axios.get('https://www.uscannenbergmedia.com/');
-  // const html = response.data;
-  // const $ = cheerio.load(html);
-  // const curTrendings = [];
+    const marqueeRegex = /<div class=\"marquee\" (.+?)>(.+?)<\/div>/;
+    let match;
 
-  // console.log($('#fusion-app > header > div:nth-child(8) > div.marquee-container').text()); 
-  // $('#fusion-app > header > div:nth-child(8) > div.marquee-container > div:nth-child(1) > span').each(function(i, elem) {
-  //   const title = $(elem).find('a').text();
-  //   const link = $(elem).find('a').attr('href');
-  //   console.log($(elem).text()); 
-    
-  //   curTrendings.push({
-  //     title: title,
-  //     link: link,
-  //   });
+    if ((match =  marqueeRegex.exec(data)) !== null) {
+      // console.log(match[0]);
+    } else {
+      console.log('No match found.');
+    }
 
-  //   console.log(title);
-  // });
-  // console.log("title");
-  // setTrendings(trendings);
-  const url = 'https://www.uscannenbergmedia.com/';
-  axios.get(url).then(response => {
-    const html = response.data;
-    const $ = cheerio.load(html);
-    const marqueeContainer = $('#fusion-app > header > div:nth-child(8) > div.marquee-container');
-    console.log(marqueeContainer.html());
-  }).catch(error => {
-    console.log(error);
-  });
-};
+    const htmlString = match[0];
 
-  useEffect(() => {
-    // This function will only be executed once when the component mounts
-    fetchTrendings();
-  }, []);
+    const hrefRegex = /<a.*?href="(.*?)".*?>(.*?)<\/a>/g;
+
+    const newBarrage = [];
+    let hrefMatch;
+    while ((hrefMatch = hrefRegex.exec(htmlString)) !== null) {
+      const href = hrefMatch[1];
+      const textOri = hrefMatch[2];
+      const text = he.decode(textOri);
+      newBarrage.push({ href, text });
+      console.log(href, text);
+    }
+
+    setBarrage(newBarrage);
+    setShowBarrage(true);
+  };
 
 
+  const [barrage, setBarrage] = useState([
+    // { text: 'Hello', href: 'https://www.uscannenbergmedia.com/' },
+    // { text: 'World', href: 'https://www.uscannenbergmedia.com/' },
+    // { text: 'React Native', href: 'https://www.uscannenbergmedia.com/' },
+    // { text: 'USC', href: 'https://www.uscannenbergmedia.com/' },
+    // { text: 'Annenberg', href: 'https://www.uscannenbergmedia.com/' },
+    // { text: 'Media', href: 'https://www.uscannenbergmedia.com/' },
+  ]);
 
-  const data = ['Hello', 'World', 'React Native', 'Barrage', 'USC', 'Annenberg', 'Media'];
+  const [showBarrage, setShowBarrage] = useState(false);
+
   const [animations, setAnimations] = useState([]);
 
   useEffect(() => {
-    const newAnimations = data.map((text, index) => {
+    const newAnimations = barrage.map((text, index) => {
       const xPosition = new Animated.Value(Math.floor(Math.random() * 100) + screenWidth); // random x position
-      const yPosition = new Animated.Value(Math.floor(Math.random() * 100) + index * 50); // random y position
-      const duration = Math.floor(Math.random() * 20000) + 10000; // random duration
+      const yPosition = new Animated.Value(Math.floor(Math.random() * 100) + index * 100); // random y position
+      const duration = Math.floor(Math.random() * 10000) + 20000; // random duration
       const animation = Animated.timing(xPosition, {
-        toValue: -100,
+        toValue: -300,
         duration: duration,
         useNativeDriver: true,
       });
@@ -146,9 +144,12 @@ const fetchTrendings = async () => {
       });
     };
     startAnimation();
-  }, []);
+  }, [barrage]);
 
   
+  /**
+   * render the page
+   */
   return (
     <View style={styles.container}>
       {/* {!webViewUrl && 
@@ -160,7 +161,8 @@ const fetchTrendings = async () => {
         </View>
       </TouchableOpacity>}
        */}
-      {!webViewUrl && 
+      
+      {/* Search input */}
       <View style={styles.searchContainer}>
         <TextInput
           style={styles.searchInput}
@@ -174,13 +176,26 @@ const fetchTrendings = async () => {
         <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
           <Text style={styles.searchButtonText}>Search</Text>
         </TouchableOpacity>
-      </View>}
-      {webViewUrl && <WebView source={{ uri: webViewUrl }} style={styles.webView}/>}
+      </View>
       
-      
-      {/* {data.map((text, index) => (
+      {/* Get barrage by webview */}
+      {!showBarrage && <WebView
+      style={styles.webViewT}
+      source={{ uri: 'https://www.uscannenbergmedia.com/' }}
+      injectedJavaScript={`
+        const divContent = document.getElementById('fusion-app').innerHTML;
+        window.ReactNativeWebView.postMessage(divContent);
+      `}
+      onMessage={onWebViewMessage}
+    />}
+
+      {/* Show barrage */}
+      {barrage.map(({text, href}, index) => (
+        <TouchableOpacity
+        key={text+href}
+        onPress={() => navigation.navigate('Result', { link: href })}
+      >
         <Animated.Text
-          key={index}
           style={[
             styles.text,
             animations[index] && {
@@ -193,7 +208,8 @@ const fetchTrendings = async () => {
         >
           {text}
         </Animated.Text>
-      ))} */}
+      </TouchableOpacity>
+      ))}
 
     </View>
   );
@@ -260,6 +276,10 @@ const styles = StyleSheet.create({
     color: '#fff',
     marginHorizontal: 5,
   },
+  webViewT:{
+    opacity: 0, 
+    height: 0 
+  }
 });
 
 export default Search;

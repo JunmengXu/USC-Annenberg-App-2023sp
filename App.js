@@ -10,6 +10,7 @@ import MeScreen from './View/Me';
 import PopularScreen from './View/Popular';
 import SearchScreen from './View/Search';
 import DetailedNews from './View/Home/DetailedNews';
+import Result from './View/Search/Result';
 import { NewsContextProvider } from './View/Context/newsContext';
 import { AudioContextProvider } from './View/Context/audioContext';
 import { VideoContextProvider } from './View/Context/videoContext';
@@ -31,6 +32,15 @@ function MeStack() {
     <Stack.Navigator>
       <Stack.Screen name="MeScreen" component={MeScreen} options={{ headerShown: false }}/>
       <Stack.Screen name="NewsDetail" component={DetailedNews} options={{ headerShown: false }}/>
+    </Stack.Navigator>
+  );
+}
+
+function SearchStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="SearchScreen" component={SearchScreen} options={{ headerShown: false }}/>
+      <Stack.Screen name="Result" component={Result} options={{ headerShown: false }}/>
     </Stack.Navigator>
   );
 }
@@ -79,7 +89,7 @@ export default function App() {
               <Tab.Screen name="Home" component={HomeStack} />
               <Tab.Screen name="Radio" component={AudioScreen} />
               <Tab.Screen name="Video" component={PopularScreen} />
-              <Tab.Screen name="Search" component={SearchScreen} />
+              <Tab.Screen name="Search" component={SearchStack} />
               <Tab.Screen name="Me" component={MeStack} />
             </Tab.Navigator>
           </NavigationContainer>

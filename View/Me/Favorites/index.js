@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
   },
   likedThingText:{
-    fontFamily: 'Chalkboard SE',
+    fontFamily: 'Arial',
     color: '#9a0000',
     fontSize: 24,
     fontWeight: 'bold',

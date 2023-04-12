@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import cheerio from 'cheerio';
-import { View, ScrollView, StyleSheet, Image, RefreshControl } from 'react-native';
-import { Text, Card, Button, Icon } from '@rneui/themed';
+import { View, ScrollView, StyleSheet, Text, RefreshControl, ActivityIndicator } from 'react-native';
 import SpotifyRadio from './spotifyRadios';
 
 const Audio = () => {
@@ -10,7 +9,8 @@ const Audio = () => {
 // const embedUrl = "https://open.spotify.com/embed/episode/0JhiPH8neYIscxS8bV9FSc?utm_source=generator";
 const [radios, setRadios] = useState([]);
 const [refresh, setRefresh] = useState(false);
-const initialNum = 3;
+const [isLoading, setIsLoading] = useState(true);
+const initialNum = 2;
 
 const fetchData = async () => {
   const response = await axios.get('https://www.uscannenbergmedia.com/arn/');
@@ -105,6 +105,7 @@ const fetchRadiosInfo = async () => {
   const data2 = await fetchRadios();
   const data3 = data1.concat(data2);
   setRadios(data3);
+  setIsLoading(false);
 }
 
 useEffect(() => {
@@ -127,9 +128,17 @@ return (
     <ScrollView refreshControl={
           <RefreshControl refresh={refresh} onRefresh={onRefresh} />
         }>
+
       <View style={styles.container}>
         {radios && <SpotifyRadio radios={radios}/>}
       </View>
+
+      {isLoading && (
+        <View style={styles.loadingHint}>
+          <Text style={styles.loadingText}>Loading...</Text>
+          <ActivityIndicator size="large" color="#9a0000" />
+        </View>
+      )}
     </ScrollView>
   </>
 );
@@ -154,6 +163,15 @@ image: {
 name: {
   fontSize: 16,
   marginTop: 5,
+},
+loadingHint: {
+  height: 80,
+  alignItems: 'center',
+},
+loadingText: {
+  fontSize: 18,
+  color: 'grey',
+  marginBottom: 16,
 },
 });
 

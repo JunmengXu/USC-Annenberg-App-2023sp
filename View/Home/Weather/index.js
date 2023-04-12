@@ -58,7 +58,7 @@ const Weather = () => {
       {currentWeatherDetails && (
         <View style={styles.container}>
         <View style={styles.card}>
-          <View>
+          <View style={styles.vertical}>
             <Image style={styles.icon} source={{uri: iconUrl}} />
             <Text style={styles.description}>{currentWeatherDetails.weather[0].description}</Text>
           </View>
@@ -99,7 +99,6 @@ const styles = StyleSheet.create({
   },
   description: {
     fontSize: 12,
-    marginLeft: 5,
     color: 'grey',
   },
   location: {
@@ -107,6 +106,11 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     width: 160, // set the width of the block
     flexWrap: 'wrap' // allow the text to wrap to the next line
+  },
+  vertical: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

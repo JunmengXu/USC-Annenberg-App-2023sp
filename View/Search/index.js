@@ -89,7 +89,7 @@ const Search = () => {
       const textOri = hrefMatch[2];
       const text = he.decode(textOri);
       newBarrage.push({ href, text });
-      console.log(href, text);
+      // console.log(href, text);
     }
 
     setBarrage(newBarrage);

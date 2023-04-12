@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "usc-annenberg-app-2023sp",
-    "slug": "usc-annenberg-app-2023sp",
+    "name": "Annenberg Media",
+    "slug": "Annenberg Media",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

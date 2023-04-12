@@ -23,7 +23,6 @@ const Popular = () => {
       const description = $(elem).find('media\\:description').text();
       const fullVideoId = 'https://www.youtube.com/embed/'+videoId;
 
-
       const datePT = new Date(date);
       // Format the date string in the desired format
       const formattedDateString = datePT.toLocaleDateString('en-US', {

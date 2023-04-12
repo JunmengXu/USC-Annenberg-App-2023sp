@@ -47,8 +47,10 @@ const Videos = ({videos}) => {
                                         mediaPlaybackRequiresUserAction={false}
                                         javaScriptEnabled={true}
                                         domStorageEnabled={true}
+                                        allowsBackgroundMediaPlayback={true}
                                         style={styles.webView}
                                     />
+
                                     <Text style={styles.date}>{v.date}</Text>
                                     {/* <ScrollView style={styles.desView}>
                                         <View style={styles.cardContent}>
@@ -114,6 +116,13 @@ const styles = StyleSheet.create({
         fontSize: 11,
         marginTop: 5,
         color: "grey",
+      },
+      backgroundVideo: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
       },
   });
 

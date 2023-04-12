@@ -112,11 +112,11 @@ const Search = () => {
 
   useEffect(() => {
     const newAnimations = barrage.map((text, index) => {
-      const xPosition = new Animated.Value(Math.floor(Math.random() * 100) + screenWidth); // random x position
-      const yPosition = new Animated.Value(Math.floor(Math.random() * 100) + index * 100); // random y position
-      const duration = Math.floor(Math.random() * 10000) + 20000; // random duration
+      const xPosition = new Animated.Value(Math.floor(Math.random() * 200) + screenWidth); // random x position
+      const yPosition = new Animated.Value(Math.floor(Math.random() * 50) + index * 40); // random y position
+      const duration = Math.floor(Math.random() * 15000) + 13000; // random duration
       const animation = Animated.timing(xPosition, {
-        toValue: -300,
+        toValue: -600,
         duration: duration,
         useNativeDriver: true,
       });
@@ -192,20 +192,17 @@ const Search = () => {
       {/* Show barrage */}
       {barrage.map(({text, href}, index) => (
         <TouchableOpacity
+        style={[
+          animations[index] && {
+            transform: [
+              { translateX: animations[index].xPosition },
+              { translateY: animations[index].yPosition },
+            ],
+          }]}
         key={text+href}
         onPress={() => navigation.navigate('Result', { link: href })}
       >
-        <Animated.Text
-          style={[
-            styles.text,
-            animations[index] && {
-              transform: [
-                { translateX: animations[index].xPosition },
-                { translateY: animations[index].yPosition },
-              ],
-            },
-          ]}
-        >
+        <Animated.Text>
           {text}
         </Animated.Text>
       </TouchableOpacity>
@@ -279,7 +276,7 @@ const styles = StyleSheet.create({
   webViewT:{
     opacity: 0, 
     height: 0 
-  }
+  },
 });
 
 export default Search;

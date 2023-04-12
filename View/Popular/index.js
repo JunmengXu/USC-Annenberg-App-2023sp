@@ -1,13 +1,14 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import cheerio from 'cheerio';
-import { View, ScrollView, StyleSheet, Image, RefreshControl } from 'react-native';
+import { View, ScrollView, StyleSheet, Image, Text, RefreshControl, ActivityIndicator } from 'react-native';
 import Videos from './videos'
 
 const Popular = () => {
 
   const [videos, setVideos] = useState([]);
   const [refresh, setRefresh] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchData = async () => {
     const response = await axios.get('https://www.youtube.com/feeds/videos.xml?channel_id=UCRhQCjsEqWvA6Iq_WKD1CoA');
@@ -50,6 +51,7 @@ const Popular = () => {
     });
 
     setVideos(curVideos);
+    setIsLoading(false);
   }
 
   useEffect(() => {
@@ -74,6 +76,7 @@ return (
         source={{ uri: 'https://www.uscannenbergmedia.com/pf/resources/uscamlogo.png?d=51' }}
         style={styles.image}
       />
+
       <ScrollView refreshControl={
           <RefreshControl refresh={refresh} onRefresh={onRefresh} />
         }>
@@ -81,6 +84,13 @@ return (
           {videos && <Videos videos={videos}/>}
         </View>
       </ScrollView>
+
+      {isLoading && (
+        <View style={styles.loadingHint}>
+          <Text style={styles.loadingText}>Loading...</Text>
+          <ActivityIndicator size="large" color="#9a0000" />
+        </View>
+      )}
     </View>
   </>
 );
@@ -107,6 +117,15 @@ image: {
 name: {
   fontSize: 16,
   marginTop: 5,
+},
+loadingHint: {
+  height: 80,
+  alignItems: 'center',
+},
+loadingText: {
+  fontSize: 18,
+  color: 'grey',
+  marginBottom: 16,
 },
 });
 

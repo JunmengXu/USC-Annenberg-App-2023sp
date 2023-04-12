@@ -49,12 +49,13 @@ const Videos = ({videos}) => {
                                         domStorageEnabled={true}
                                         style={styles.webView}
                                     />
-                                    <ScrollView style={styles.desView}>
+                                    <Text style={styles.date}>{v.date}</Text>
+                                    {/* <ScrollView style={styles.desView}>
                                         <View style={styles.cardContent}>
                                             <Text style={styles.description}>{v.description}</Text>
                                             <Text style={styles.date}>{v.date}</Text>
                                         </View>
-                                    </ScrollView>
+                                    </ScrollView> */}
                                     <TouchableOpacity onPress={() => handleLike(v)} style={styles.marker}>
                                         <Ionicons name={isLiked ? 'star' : 'star-outline'} size={30} color={isLiked ? '#9a0000' : '#9a0000'} />
                                     </TouchableOpacity>
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
       },
       webView: {
         width: '100%',
-        height: 360,
+        height: 320,
         top: 0,
         left: 0,
         zIndex: 1,
@@ -104,7 +105,7 @@ const styles = StyleSheet.create({
       },
       marker: {
         position: 'absolute',
-        bottom: -8, // adjust the value to change the distance from the bottom
+        bottom: -18, // adjust the value to change the distance from the bottom
         right: 5, // adjust the value to change the distance from the right
         padding: 3, // adjust the padding as needed
         borderRadius: 5, // adjust the border radius as needed

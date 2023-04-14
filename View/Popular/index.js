@@ -71,10 +71,12 @@ const Popular = () => {
 return (
   <>
     <View style={styles.container}>
-      <Image
-        source={{ uri: 'https://www.uscannenbergmedia.com/pf/resources/uscamlogo.png?d=51' }}
-        style={styles.image}
-      />
+      <View style={styles.imageView}>
+        <Image
+          source={{ uri: 'https://www.uscannenbergmedia.com/pf/resources/uscamlogo.png?d=51' }}
+          style={styles.image}
+        />
+      </View>
 
       <ScrollView refreshControl={
           <RefreshControl refresh={refresh} onRefresh={onRefresh} />
@@ -99,6 +101,7 @@ const styles = StyleSheet.create({
 container: {
   flex: 1,
   justifyContent: 'center',
+  alignItems: 'center',
 },
 fonts: {
   marginBottom: 8,
@@ -112,6 +115,10 @@ image: {
   marginLeft: 5,
   marginRight: 5,
   marginTop: 5,
+  resizeMode: 'contain',
+},
+imageView: {
+  width: '95%',
 },
 name: {
   fontSize: 16,

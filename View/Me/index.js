@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     // lineHeight: 24,
     // letterSpacing: 0.5,
     // marginLeft: 10,
-    fontFamily: 'Chalkboard SE',
+    fontFamily: 'Arial',
     color: 'grey',
     fontSize: 15,
     fontWeight: 'bold',

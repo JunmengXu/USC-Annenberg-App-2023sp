@@ -38,7 +38,7 @@ const SpotifyRadio = ({radios}) => {
 
               return (
                 <Card key={r.link}>
-                <Card.Title>{r.title}</Card.Title>
+                <Card.Title style={styles.title}>{r.title}</Card.Title>
                 <Card.Divider />
                   <View style={styles.user}>
                     <WebView 
@@ -76,9 +76,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5FCFF',
   },
   title: {
-      color:"black",
-      fontSize:20,
-      padding: 10,
+      fontSize: 20,
   },
   fonts: {
       marginBottom: 8,

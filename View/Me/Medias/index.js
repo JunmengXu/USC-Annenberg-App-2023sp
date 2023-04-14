@@ -3,6 +3,7 @@ import { View, Linking, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 
 const Medias = () => {
   const handleFacebook = () => {
@@ -38,7 +39,7 @@ const Medias = () => {
             <Icon name="twitter" size={30} style={styles.icon} />
         </TouchableOpacity>
         <TouchableOpacity onPress={handleSports}>
-            <MaterialIcons name="sports-basketball" size={30} style={styles.icon} />
+            <Entypo name="twitter-with-circle" size={30} style={styles.icon} />
         </TouchableOpacity>
         <TouchableOpacity onPress={handleInstagram}>
             <Icon name="instagram" size={30} style={styles.icon} />

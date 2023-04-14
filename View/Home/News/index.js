@@ -45,7 +45,7 @@ const News = ({ news }) => {
                 onPress={() => navigation.navigate('NewsDetail', { link: n.link })}
               >
                 <Card>
-                <Card.Title>{n.title}</Card.Title>
+                <Card.Title style={styles.title}>{n.title}</Card.Title>
                 <Card.Divider />
                   <View style={styles.user}>
                     {n.img !== undefined && <Image
@@ -86,9 +86,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#F5FCFF',
     },
     title: {
-        color:"black",
-        fontSize:20,
-        padding: 10,
+        fontSize: 20,
     },
     fonts: {
         marginBottom: 8,

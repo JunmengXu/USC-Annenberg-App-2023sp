@@ -1,4 +1,0 @@
-suppress_xcode_output(false)
-clean(true)
-
-disable_xcpretty(false)

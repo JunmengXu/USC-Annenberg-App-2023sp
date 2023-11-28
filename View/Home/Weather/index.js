@@ -6,7 +6,7 @@ import * as Location from 'expo-location';
 const Weather = () => {
   // const [locationPermission, setLocationPermission] = useState(null);
 
-  const WEATHER_API_KEY = "9d754d6e12cc9d9de92ca7a0d6493882";
+  const WEATHER_API_KEY = "MY_API_KEY";
   const BASE_WEATHER_URL = "https://api.openweathermap.org/data/2.5/weather?";
   const IP_URL = "https://ipapi.co/json/";
 
